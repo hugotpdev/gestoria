@@ -2,7 +2,7 @@
     <div class="max-w-4xl mx-auto py-10 px-6 sm:px-10 bg-white shadow rounded-lg">
         <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Crear Nueva Propiedad</h1>
 
-        <form action="{{ route('properties.store') }}" method="POST" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <form action="{{ route('properties.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             @csrf
 
             <!-- Título -->
@@ -66,10 +66,9 @@
                 @error('area') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
-            <!-- URL de Imagen -->
             <div class="sm:col-span-2">
-                <label for="image_url" class="block text-sm font-semibold text-gray-700">URL de Imagen</label>
-                <input type="url" id="image_url" name="image_url" value="{{ old('image_url') }}" class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <label for="image_url" class="block text-sm font-semibold text-gray-700">Imagen de la propiedad</label>
+                <input type="file" id="image_url" name="image_url" accept="image/*" class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                 @error('image_url') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 

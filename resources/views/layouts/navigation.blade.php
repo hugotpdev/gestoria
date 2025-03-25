@@ -36,6 +36,10 @@
                         <x-nav-link href="{{ route('admin.users') }}" :active="request()->routeIs('admin.users')">
                             {{ __('Gestionar usuarios') }}
                         </x-nav-link>
+
+                        <x-nav-link href="{{ route('admin.verify-transactions') }}" :active="request()->routeIs('admin.verify-transactions')">
+                            {{ __('Gestionar Transacciones') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -112,9 +116,17 @@
                 {{ __('Crear Propiedad') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link href="{{ route('admin.users') }}" :active="request()->routeIs('admin.users')">
-                {{ __('Gestionar usuarios') }}
-            </x-responsive-nav-link>
+            @if (auth()->user()->isAdmin())
+                <x-responsive-nav-link href="{{ route('admin.users') }}" :active="request()->routeIs('admin.users')">
+                    {{ __('Gestionar usuarios') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link href="{{ route('admin.verify-transactions') }}" :active="request()->routeIs('admin.verify-transactions')">
+                    {{ __('Gestionar Transacciones') }}
+                </x-responsive-nav-link>
+
+            @endif
+           
             
 
         </div>

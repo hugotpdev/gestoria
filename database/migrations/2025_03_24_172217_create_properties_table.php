@@ -19,11 +19,11 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->string('location');
             $table->enum('type', ['venta', 'alquiler']);
-            $table->enum('status', ['disponible', 'reservado', 'vendido', 'alquilado'])->default('disponible');
-            $table->integer('bedrooms')->nullable(); // Número de habitaciones
-            $table->integer('bathrooms')->nullable(); // Número de baños
-            $table->decimal('area', 8, 2)->nullable(); // Superficie en metros cuadrados
-            $table->string('image_url')->nullable(); // URL de la imagen de la propiedad
+            $table->enum('status', ['disponible', 'reservado', 'finalizado'])->default('disponible');
+            $table->integer('bedrooms')->nullable(); 
+            $table->integer('bathrooms')->nullable(); 
+            $table->decimal('area', 8, 2)->nullable(); 
+            $table->string('image_url')->nullable(); 
             $table->timestamps();
         });
     }

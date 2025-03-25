@@ -12,10 +12,13 @@ class AdminController extends Controller
     // Mostrar la vista de edición de un usuario
     public function edit($id)
     {
-        $user = User::findOrFail($id);  // Buscar al usuario por ID
+        $user = User::findOrFail($id);
+
+        // Ocultar el campo de la contraseña al pasar los datos a la vista
+        $user->makeHidden(['password']);
+
         return view('admin.edit_user', compact('user'));
     }
-
     // Actualizar los detalles del usuario
     public function update(Request $request, $id)
     {

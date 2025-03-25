@@ -8,7 +8,6 @@
             <table class="w-full border-collapse bg-white text-left text-sm text-gray-600 shadow-md rounded-lg">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="px-6 py-4 font-medium text-gray-900">ID</th>
                         <th class="px-6 py-4 font-medium text-gray-900">Nombre</th>
                         <th class="px-6 py-4 font-medium text-gray-900">Correo Electrónico</th>
                         <th class="px-6 py-4 font-medium text-gray-900">Fecha de Registro</th>
@@ -18,7 +17,6 @@
                 <tbody class="divide-y divide-gray-200">
                     @foreach ($users as $user)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4">{{ $user->id }}</td>
                             <td class="px-6 py-4">{{ $user->name }}</td>
                             <td class="px-6 py-4">{{ $user->email }}</td>
                             <td class="px-6 py-4">{{ $user->created_at->format('d/m/Y') }}</td>

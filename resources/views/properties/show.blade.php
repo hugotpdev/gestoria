@@ -3,7 +3,8 @@
         <h1 class="text-5xl font-extrabold text-gray-900 mb-8 text-center">{{ $property->title }}</h1>
 
         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="{{ $property->image_url ?? 'https://via.placeholder.com/800x500' }}" alt="Propiedad" class="w-full h-96 object-cover">
+            <!-- Mostrar la imagen usando Storage::url() -->
+            <img src="{{ $property->image_url ? Storage::url($property->image_url) : 'https://via.placeholder.com/800x500' }}" alt="Propiedad" class="w-full h-96 object-cover">
             <div class="p-6">
                 <p class="text-lg font-semibold text-gray-800">€{{ number_format($property->price, 2) }}</p>
                 <p class="text-sm text-gray-600 mt-2">Ubicación: {{ $property->location }}</p>

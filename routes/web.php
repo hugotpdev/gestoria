@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 
@@ -31,6 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::put('properties/{id}', [PropertyController::class, 'update'])->name('properties.update'); // *
     Route::delete('/properties/{property}', [PropertyController::class, 'destroy'])->name('properties.destroy'); // *
     Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store'); // *
+    Route::get('/properties/buy/{id}', [PropertyController::class, 'buy'])->name('properties.buy');
+
+
+    Route::post('/properties/buy/{property}', [TransactionController::class, 'store'])->name('transactions.create');
 });
 
 
@@ -45,6 +50,10 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // Actualizar un usuario
     Route::put('/admin/users/{id}', [AdminController::class, 'update'])->name('admin.update');
     Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.destroy');
+
+    Route::get('/admin/transactions', [TransactionController::class, 'index'])->name('admin.verify-transactions');
+    Route::post('/admin/transactions/accept/{transaction}', [TransactionController::class, 'accept'])->name('transactions.accept');
+    Route::post('/admin/transactions/cancel/{transaction}', [TransactionController::class, 'cancel'])->name('transactions.cancel');
 
 });
 

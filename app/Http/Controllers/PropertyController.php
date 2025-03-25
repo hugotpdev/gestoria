@@ -26,30 +26,37 @@ class PropertyController extends Controller {
 
 
     public function store(Request $request)
-    {
-        // Validación de los datos
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'type' => 'required|string|max:255',
-            'bedrooms' => 'required|integer',
-            'bathrooms' => 'required|integer',
-            'area' => 'required|integer',
-            'image_url' => 'nullable|url',
-        ]);
+{
+    // Validación de los datos, incluyendo la imagen
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'type' => 'required|string|max:255',
+        'bedrooms' => 'required|integer',
+        'bathrooms' => 'required|integer',
+        'area' => 'required|integer',
+        'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validación para imagen
+    ]);
 
-        // Crear la propiedad con el estado predeterminado "disponible"
-        $property = Property::create(array_merge($validated, [
-            'status' => 'disponible',
-            'user_id' => auth()->id(),  // Si necesitas asignar el usuario actual como creador
-        ]));
-
-        // Redirigir con un mensaje de éxito
-        return redirect()->route('properties.show', $property->id)
-                        ->with('success', 'Propiedad creada correctamente.');
+    // Si se ha subido una imagen, guardarla en el directorio 'public/properties'
+    $imagePath = null;
+    if ($request->hasFile('image_url')) {
+        $imagePath = $request->file('image_url')->store('properties', 'public');
     }
+
+    // Crear la propiedad con el estado predeterminado "disponible"
+    $property = Property::create(array_merge($validated, [
+        'status' => 'disponible',
+        'user_id' => auth()->id(),  // Si necesitas asignar el usuario actual como creador
+        'image_url' => $imagePath, // Guardar la ruta de la imagen
+    ]));
+
+    // Redirigir con un mensaje de éxito
+    return redirect()->route('properties.show', $property->id)
+                     ->with('success', 'Propiedad creada correctamente.');
+}
 
 
      // Función para mostrar el formulario de edición
@@ -124,6 +131,12 @@ class PropertyController extends Controller {
         $transactions = $user->buyerTransactions->merge($user->sellerTransactions);
 
         return view('properties.transactions', compact('user', 'transactions'));
+    }
+
+    public function buy($id)
+    {
+        $property = Property::findOrFail($id);
+        return redirect()->route('transactions.create', ['property' => $property->id]);
     }
     
 }
