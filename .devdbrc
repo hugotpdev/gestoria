@@ -1,0 +1,6 @@
+[
+  {
+    "type": "sqlite",
+    "path": "/home/linux/projecte/gestoria/database/database.sqlite"
+  }
+]
