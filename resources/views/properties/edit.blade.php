@@ -2,7 +2,7 @@
     <div class="max-w-4xl mx-auto py-10 px-6 sm:px-10 bg-white shadow rounded-lg">
         <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Editar Propiedad</h1>
 
-        <form action="{{ route('properties.update', $property->id) }}" method="POST" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <form action="{{ route('properties.update', $property->id) }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             @csrf
             @method('PUT')
 
@@ -35,14 +35,6 @@
                 <input type="text" id="type" name="type" value="{{ old('type', $property->type) }}" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                 @error('type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
-
-            <!-- Eliminar el campo de estado aquí -->
-            {{-- <div>
-                <label for="status" class="block text-sm font-semibold text-gray-700">Estado</label>
-                <input type="text" id="status" name="status" value="{{ old('status', $property->status) }}" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                @error('status') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-            </div> --}}
-
             <div>
                 <label for="bedrooms" class="block text-sm font-semibold text-gray-700">Habitaciones</label>
                 <input type="number" id="bedrooms" name="bedrooms" value="{{ old('bedrooms', $property->bedrooms) }}" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
@@ -62,9 +54,9 @@
             </div>
 
             <div class="sm:col-span-2">
-                <label for="image_url" class="block text-sm font-semibold text-gray-700">URL de Imagen</label>
-                <input type="url" id="image_url" name="image_url" value="{{ old('image_url', $property->image_url) }}" class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                @error('image_url') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                <label for="image" class="block text-sm font-semibold text-gray-700">Subir Nueva Imagen</label>
+                <input type="file" id="image_url" name="image_url" class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                @error('image') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
             <div class="sm:col-span-2 flex justify-end">

@@ -36,7 +36,7 @@ class PropertyController extends Controller {
         'type' => 'required|string|max:255',
         'bedrooms' => 'required|integer',
         'bathrooms' => 'required|integer',
-        'area' => 'required|integer',
+        'area' => 'required|numeric',
         'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validación para imagen
     ]);
 
@@ -74,30 +74,38 @@ class PropertyController extends Controller {
  
      // Función para actualizar los datos de la propiedad
      public function update(Request $request, $id)
-     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'type' => 'required|string|max:255',
-            'bedrooms' => 'required|integer',
-            'bathrooms' => 'required|integer',
-            'area' => 'required|integer',
-            'image_url' => 'nullable|url',
-        ]);
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'required|string|max:255',
+        'price' => 'required|numeric',
+        'type' => 'required|string|max:255',
+        'bedrooms' => 'required|integer',
+        'bathrooms' => 'required|integer',
+        'area' => 'required|numeric',
+        'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
+    $property = Property::findOrFail($id);
+
+    // Verifica si el usuario es el propietario o un administrador
+    if (auth()->user()->id !== $property->user_id && !auth()->user()->isAdmin()) {
+        abort(403, 'No tienes permisos para actualizar esta propiedad');
+    }
     
-        $property = Property::findOrFail($id);  // Encuentra la propiedad por su ID
+    if ($request->hasFile('image_url')) {
+        // Subir la nueva imagen
+        $imagePath = $request->file('image_url')->store('properties', 'public');
+        $validated['image_url'] = $imagePath;
+    }
     
-        // Verifica si el usuario es el propietario o un administrador
-        if (auth()->user()->id !== $property->user_id && !auth()->user()->is_admin) {
-            abort(403, 'No tienes permisos para actualizar esta propiedad');
-        }
-    
-        $property->update($request->all());  // Actualiza la propiedad con los datos del formulario
-    
-        return redirect()->route('properties.index')->with('success', 'Propiedad actualizada con éxito');
-     }
+
+    $property->update($validated);
+
+    return redirect()->route('properties.index')->with('success', 'Propiedad actualizada con éxito');
+}
+
 
      public function destroy($id)
     {
