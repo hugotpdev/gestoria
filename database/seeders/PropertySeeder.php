@@ -26,10 +26,10 @@ class PropertySeeder extends Seeder
             'location' => 'Madrid',
             'type' => 'venta',
             'status' => 'disponible',
-            'bedrooms' => 3, // Número de habitaciones
-            'bathrooms' => 2, // Número de baños
-            'area' => 120.50, // Superficie en metros cuadrados
-            'image_url' => 'https://example.com/images/casa_madrid.jpg', // URL de la imagen
+            'bedrooms' => 3, 
+            'bathrooms' => 2,
+            'area' => 120.50,
+            'image_url' => '/properties/Casa_de_lujo_Barcelona.JPG', 
         ]);
 
         Property::create([
@@ -43,7 +43,7 @@ class PropertySeeder extends Seeder
             'bedrooms' => 2,
             'bathrooms' => 1,
             'area' => 90.00,
-            'image_url' => 'https://example.com/images/piso_barcelona.jpg',
+            'image_url' => '/properties/Casa_de_lujo_Barcelona.JPG',
         ]);
 
         // Crear propiedades asociadas al usuario con email 'admin1@piopio.com'
@@ -58,7 +58,7 @@ class PropertySeeder extends Seeder
             'bedrooms' => 2,
             'bathrooms' => 1,
             'area' => 75.00,
-            'image_url' => 'https://example.com/images/apartamento_valencia.jpg',
+            'image_url' => '/properties/Casa_de_lujo_Barcelona.JPG',
         ]);
 
         Property::create([
@@ -72,7 +72,7 @@ class PropertySeeder extends Seeder
             'bedrooms' => 4,
             'bathrooms' => 3,
             'area' => 200.00,
-            'image_url' => 'https://example.com/images/casa_sevilla.jpg',
+            'image_url' => '/properties/Casa_de_lujo_Barcelona.JPG',
         ]);
     }
 }

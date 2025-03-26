@@ -22,12 +22,9 @@ class TransactionController extends Controller
     // Aceptar transacción
     public function accept(Transaction $transaction)
     {
-
-        // Cambiar el estado de la transacción a 'completada'
         $transaction->status = 'completado';
         $transaction->save();
 
-        // Cambiar la propiedad a 'finalizada'
         $property = Property::find($transaction->property_id);
         $property->status = 'finalizado';
         $property->save();
@@ -38,11 +35,8 @@ class TransactionController extends Controller
     // Cancelar transacción
     public function cancel(Transaction $transaction)
     {
-
-        // Eliminar la transacción
         $transaction->delete();
 
-        // Cambiar el estado de la propiedad a 'disponible'
         $property = Property::find($transaction->property_id);
         $property->status = 'disponible';
         $property->save();
@@ -54,21 +48,17 @@ class TransactionController extends Controller
     {
         $userId = Auth::id();
 
-        // 1. Verificar que la propiedad esté disponible
         if ($property->status !== 'disponible') {
             return redirect()->route('properties.index')->with('error', 'Esta propiedad ya no está disponible.');
         }
 
-        // 2. Verificar que el usuario no sea el propietario
         if ($property->user_id == $userId) {
             return redirect()->route('properties.index')->with('error', 'No puedes comprar o alquilar tu propia propiedad.');
         }
 
-        // Iniciar una transacción para evitar problemas en caso de error
         DB::beginTransaction();
 
         try {
-            // 3. Crear la transacción con estado "pendiente"
             Transaction::create([
                 'property_id' => $property->id,
                 'buyer_id' => $userId,
@@ -79,15 +69,12 @@ class TransactionController extends Controller
                 'status' => 'pendiente',
             ]);
 
-            // 4. Cambiar el estado de la propiedad a "reservado"
             $property->update(['status' => 'reservado']);
 
-            // Confirmar los cambios
             DB::commit();
 
             return redirect()->route('properties.index')->with('success', 'Propiedad reservada con éxito. La transacción está pendiente.');
         } catch (\Exception $e) {
-            // Si ocurre algún error, deshacer los cambios
             DB::rollBack();
             return redirect()->route('properties.index')->with('error', 'Error al procesar la compra.');
         }

@@ -96,6 +96,6 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->hasRole('admin');  // Asumiendo que el rol 'admin' existe en la tabla roles
+        return $this->hasRole('admin'); 
     }
 }

@@ -14,34 +14,33 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Ocultar el campo de la contraseña al pasar los datos a la vista
         $user->makeHidden(['password']);
 
         return view('admin.edit_user', compact('user'));
     }
+
     // Actualizar los detalles del usuario
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);  // Buscar al usuario por ID
+        $user = User::findOrFail($id);  
 
-        // Validar los datos del formulario
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:4|confirmed',  // Se puede dejar vacío si no se quiere cambiar
+            'password' => 'nullable|min:4|confirmed',  
         ]);
 
-        // Actualizar el usuario
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         if ($request->has('password')) {
-            $user->password = bcrypt($request->input('password'));  // Encriptar la nueva contraseña
+            $user->password = bcrypt($request->input('password'));  
         }
-        $user->save();  // Guardar cambios
+        $user->save();  
 
         return redirect()->route('admin.users')->with('success', 'Usuario actualizado correctamente');
     }
 
+    // Muestra todos los usuarios que no son administradores
     public function showMembersUsers()
     {
         $users = User::whereDoesntHave('roles', function ($query) {
@@ -51,10 +50,11 @@ class AdminController extends Controller
         return view('admin.users', compact('users'));
     }
 
+    // Elimina un usuario por su ID
     public function destroyUser($id)
     {
-        $user = User::findOrFail($id); // Encuentra el usuario por su ID
-        $user->delete(); // Elimina el usuario
+        $user = User::findOrFail($id); 
+        $user->delete(); 
 
         return redirect()->route('admin.users')->with('success', 'Usuario eliminado con éxito');
     }
